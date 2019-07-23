@@ -285,5 +285,5 @@ class Parser
     }
 };
 
-$obj = Parser::parse_dom($doc->getElementById('u_0_k'), $doc);
+$obj = Parser::parse_dom($doc->getElementById('stream_pagelet'), $doc);
 echo json_encode($obj, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
