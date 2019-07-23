@@ -227,6 +227,7 @@ class Parser
                 }
             }
         }
+
         foreach ($dom->getElementsByTagName('div') as $div_dom) {
             if ($div_dom->getAttribute('data-testid') == 'UFI2Comment/root_depth_0') {
                 $comment_parent = $div_dom;
@@ -274,6 +275,64 @@ class Parser
                         $comment->image_alt = $img_dom->getAttribute('alt');
                     }
                 }
+
+                while (true) {
+                    if ($comment_parent->nodeName == 'li') {
+                        break;
+                    }
+                    $comment_parent = $comment_parent->parentNode;
+                }
+                foreach ($comment_parent->getElementsByTagName('div') as $div_dom) {
+                    if ($div_dom->getAttribute('data-testid') == 'UFI2CommentsList/root_depth_1') {
+                        break;
+                    }
+                }
+
+                if ($ul_dom = $div_dom->getElementsByTagName('ul')->item(0)) {
+                    foreach ($div_dom->getElementsByTagName('ul')->item(0)->childNodes as $reply_parent) {
+                        $reply = new StdClass;
+                        $reply->time = $reply_parent->getElementsByTagName('abbr')->item(0)->getAttribute('data-utime');
+                        foreach ($reply_parent->getElementsByTagName('span') as $span_dom) {
+                            if ('ltr' != $span_dom->getAttribute('dir')) {
+                                continue;
+                            }
+                            $reply->body = $span_dom->nodeValue;
+                        }
+
+                        foreach ($reply_parent->getElementsByTagName('a') as $a_dom) {
+                            if (!$hovercard = $a_dom->getAttribute('data-hovercard')) {
+                                continue;
+                            }
+                            if ($a_dom->getElementsByTagName('img')->length) {
+                                $reply->commentter = $a_dom->getElementsByTagName('img')->item(0)->getAttribute('alt');
+                            } else {
+                                $reply->commentter = $a_dom->nodeValue;
+                            }
+                            $query = parse_url($hovercard, PHP_URL_QUERY);
+                            parse_str($query, $arr);
+                            $reply->commentter_id = $arr['id'];
+                        }
+
+                        foreach ($reply_parent->getElementsByTagName('img') as $img_dom) {
+                            $classes = explode(' ', $img_dom->getAttribute('class'));
+                            if (!in_array('img', $classes)) {
+                                continue;
+                            }
+                            if ($img_dom->getAttribute('src') == '/images/assets_DO_NOT_HARDCODE/facebook_icons/diamond_filled_12_fds-spectrum-blue-gray.png') {
+                                $reply->is_top_fan = true;
+                            } elseif ($img_dom->parentNode->nodeName == 'a' and $img_dom->parentNode->getAttribute('data-hovercard')) {
+                            } else {
+                                $reply->image_src = $img_dom->getAttribute('src');
+                                $reply->image_alt = $img_dom->getAttribute('alt');
+                            }
+                        }
+                        if (!property_exists($comment, 'replies')) {
+                            $comment->replies = array();
+                        }
+                        $comment->replies[] = $reply;
+                    }
+                }
+
                 if (!property_exists($obj, 'comments')) {
                     $obj->comments = array();
                 }
