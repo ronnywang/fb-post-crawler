@@ -25,7 +25,7 @@ const rl = readline.createInterface({
      };
      const browser = await puppeteer.launch({
         headless: true,
-        args: ["--window-size=2400,1239", "--no-sandbox"]
+        args: ["--window-size=2400,1239", "--no-sandbox", "--lang=en_US"]
     });
      const page = await browser.newPage();
      await page.goto(url);
