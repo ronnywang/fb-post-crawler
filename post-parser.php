@@ -209,7 +209,7 @@ class Parser
             $href = $a_dom->getAttribute('href');
             if ($a_dom->getAttribute('data-testid') == 'UFI2CommentsCount/root') {
                 $text = $a_dom->nodeValue;
-                if (preg_match('#^([0-9,]+) Comments?$#', $text, $matches)) {
+                if (preg_match('#^([0-9,.K]+) Comments?$#', $text, $matches)) {
                     $obj->comment_count = self::getNum($matches[1]);
                 } else {
                     error_log('comment');
@@ -218,7 +218,7 @@ class Parser
                 }
             } else if ($a_dom->getAttribute('data-testid') == 'UFI2SharesCount/root') {
                 $text = $a_dom->nodeValue;
-                if (preg_match('#^([0-9,]+) Shares?$#', $text, $matches)) {
+                if (preg_match('#^([0-9,.K]+) Shares?$#', $text, $matches)) {
                     $obj->share_count = self::getNum($matches[1]);
                 } else {
                     error_log('shares');
