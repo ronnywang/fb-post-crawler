@@ -32,7 +32,7 @@ const rl = readline.createInterface({
      await page.goto(url);
      var start = (new Date).getTime();
      await page.evaluate(() => {
-        require("IntlUtils").setCookieLocale("en_US", "zh_TW", url, "www_card_selector", 0); return false;
+        require("IntlUtils").setCookieLocale("en_US", "zh_TW", document.location, "www_card_selector", 0); return false;
      });
      while (true) {
          try {
