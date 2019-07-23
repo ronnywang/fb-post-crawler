@@ -54,7 +54,7 @@ const rl = readline.createInterface({
     // click a[data-testid="UFI2CommentsCount/root"]
     while (true) {
         const { click } = await page.evaluate(() => {
-            var a_doms = document.querySelectorAll('a');
+            var a_doms = document.querySelectorAll('#stream_pagelet a');
             for (var i = 0; i < a_doms.length; i ++){
                 if (a_doms[i].getAttribute('data-testid') == 'UFI2CommentsCount/root') {
                     a_doms[i].click();
@@ -72,7 +72,7 @@ const rl = readline.createInterface({
     // click a[data-testid="UFI2ViewOptionsSelector/link"]
     while (true) {
         const { click } = await page.evaluate(() => {
-            var a_doms = document.querySelectorAll('a');
+            var a_doms = document.querySelectorAll('#stream_pagelet a');
             for (var i = 0; i < a_doms.length; i ++){
                 if (a_doms[i].getAttribute('data-testid') == 'UFI2ViewOptionsSelector/link') {
                     a_doms[i].click();
@@ -114,7 +114,7 @@ const rl = readline.createInterface({
         }
 
         const { hit } = await page.evaluate( () => {
-            var a_doms = document.querySelectorAll('a');
+            var a_doms = document.querySelectorAll('#stream_pagelet a');
             var hit = 0;
             for (var i = 0; i < a_doms.length; i ++){
                 if (a_doms[i].getAttribute('data-testid') == 'UFI2CommentsPagerRenderer/pager_depth_1') {
